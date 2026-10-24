@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="1600" height="1000" preserveAspectRatio="xMidYMid slice" role="img" aria-label="A review desk with a laptop showing an approval checklist, documents, a stamp and a magnifying glass">
+  <rect width="1600" height="1000" fill="#0A4D2B"/>
+  <circle cx="1180" cy="330" r="360" fill="#0D5A32"/>
+  <circle cx="220" cy="140" r="220" fill="#0C5430"/>
+  <circle cx="1500" cy="900" r="260" fill="#0C5430"/>
+
+  <!-- desk -->
+  <rect x="0" y="612" width="1600" height="388" fill="#083D22"/>
+  <rect x="0" y="612" width="1600" height="8" fill="#0F6B3A"/>
+
+  <!-- floating document cards -->
+  <g transform="rotate(-8 790 410)">
+    <rect x="720" y="320" width="150" height="190" rx="12" fill="#FFFFFF"/>
+    <rect x="740" y="346" width="80" height="12" rx="6" fill="#0F6B3A"/>
+    <rect x="740" y="376" width="110" height="9" rx="4.5" fill="#C9D8CF"/>
+    <rect x="740" y="398" width="100" height="9" rx="4.5" fill="#C9D8CF"/>
+    <rect x="740" y="420" width="110" height="9" rx="4.5" fill="#C9D8CF"/>
+    <circle cx="828" cy="476" r="16" fill="#E0A800"/>
+    <path d="M820 476 L826 482 L837 470" fill="none" stroke="#14211A" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <g transform="rotate(9 1490 400)">
+    <rect x="1410" y="300" width="160" height="200" rx="12" fill="#FFFFFF"/>
+    <rect x="1430" y="326" width="90" height="12" rx="6" fill="#0F6B3A"/>
+    <rect x="1430" y="356" width="120" height="9" rx="4.5" fill="#C9D8CF"/>
+    <rect x="1430" y="378" width="110" height="9" rx="4.5" fill="#C9D8CF"/>
+    <rect x="1430" y="400" width="120" height="9" rx="4.5" fill="#C9D8CF"/>
+    <circle cx="1536" cy="466" r="16" fill="#0F6B3A"/>
+    <path d="M1528 466 L1534 472 L1545 460" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- laptop -->
+  <rect x="850" y="210" width="540" height="380" rx="22" fill="#14211A"/>
+  <rect x="866" y="226" width="508" height="348" rx="10" fill="#F4F7F5"/>
+  <rect x="866" y="226" width="508" height="46" rx="10" fill="#0F6B3A"/>
+  <rect x="866" y="250" width="508" height="22" fill="#0F6B3A"/>
+  <rect x="888" y="242" width="120" height="12" rx="6" fill="#FFFFFF"/>
+
+  <circle cx="906" cy="324" r="14" fill="#0F6B3A"/>
+  <path d="M899 324 L904 329 L913 319" fill="none" stroke="#FFFFFF" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="936" y="318" width="250" height="12" rx="6" fill="#C9D8CF"/>
+
+  <circle cx="906" cy="378" r="14" fill="#0F6B3A"/>
+  <path d="M899 378 L904 383 L913 373" fill="none" stroke="#FFFFFF" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="936" y="372" width="210" height="12" rx="6" fill="#C9D8CF"/>
+
+  <circle cx="906" cy="432" r="14" fill="#E0A800"/>
+  <rect x="936" y="426" width="270" height="12" rx="6" fill="#C9D8CF"/>
+
+  <circle cx="906" cy="486" r="14" fill="#FFFFFF" stroke="#8FA399" stroke-width="3"/>
+  <rect x="936" y="480" width="180" height="12" rx="6" fill="#C9D8CF"/>
+
+  <rect x="1226" y="520" width="124" height="36" rx="10" fill="#0F6B3A"/>
+  <rect x="1252" y="534" width="72" height="9" rx="4.5" fill="#FFFFFF"/>
+  <rect x="1090" y="520" width="112" height="36" rx="10" fill="#FFFFFF" stroke="#9E1C14" stroke-width="3"/>
+  <rect x="1114" y="534" width="64" height="9" rx="4.5" fill="#9E1C14"/>
+
+  <rect x="800" y="590" width="640" height="26" rx="13" fill="#C3E2D1"/>
+  <rect x="1060" y="590" width="120" height="8" rx="4" fill="#9CC8B0"/>
+
+  <!-- stamp on desk -->
+  <g>
+    <rect x="690" y="610" width="34" height="48" rx="12" fill="#E0A800"/>
+    <rect x="664" y="656" width="86" height="22" rx="8" fill="#E0A800"/>
+    <rect x="656" y="678" width="102" height="16" rx="6" fill="#14211A"/>
+    <rect x="740" y="706" width="120" height="16" rx="8" fill="#0F6B3A" opacity="0.7"/>
+  </g>
+
+  <!-- magnifying glass -->
+  <g>
+    <circle cx="1490" cy="760" r="40" fill="#FFFFFF" fill-opacity="0.14" stroke="#FFFFFF" stroke-width="9"/>
+    <path d="M1519 789 L1560 830" stroke="#FFFFFF" stroke-width="12" stroke-linecap="round"/>
+  </g>
+
+  <!-- approved badges -->
+  <g>
+    <circle cx="1000" cy="130" r="34" fill="#FFFFFF"/>
+    <path d="M985 130 L996 141 L1016 119" fill="none" stroke="#0F6B3A" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="1290" cy="110" r="22" fill="#E0A800"/>
+    <path d="M1280 110 L1287 117 L1300 103" fill="none" stroke="#14211A" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="1120" cy="70" r="8" fill="#FFFFFF" fill-opacity="0.7"/>
+    <circle cx="1420" cy="160" r="9" fill="#E0A800"/>
+    <circle cx="930" cy="170" r="7" fill="#FFFFFF" fill-opacity="0.7"/>
+  </g>
+</svg>

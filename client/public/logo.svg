@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 72" width="320" height="72" role="img" aria-label="Student Clearance">
+  <g transform="translate(4 4)">
+    <circle cx="32" cy="32" r="30" fill="#0F6B3A"/>
+    <path d="M19 30.5 L32 36.5 L45 30.5 V39 C45 42.5 39 46 32 46 C25 46 19 42.5 19 39 Z" fill="#FFFFFF" fill-opacity="0.9"/>
+    <polygon points="32,14 55,25 32,36 9,25" fill="#FFFFFF"/>
+    <path d="M55 25 V37" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round"/>
+    <circle cx="55" cy="39" r="2.6" fill="#FFFFFF"/>
+    <path d="M25 25.2 L30 30 L40 20.5" fill="none" stroke="#0F6B3A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <text x="82" y="34" font-family="Inter, 'Segoe UI', Arial, sans-serif" font-size="26" font-weight="700" fill="#0B4D2B">Student Clearance</text>
+  <text x="83" y="56" font-family="Inter, 'Segoe UI', Arial, sans-serif" font-size="14" font-weight="500" letter-spacing="1.2" fill="#4D5F55">AND CERTIFICATE ISSUANCE</text>
+</svg>

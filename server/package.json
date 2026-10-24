@@ -1,0 +1,39 @@
+{
+  "name": "clearance-server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "node --watch src/index.js",
+    "start": "node src/index.js",
+    "db:migrate": "node src/db/migrate.js",
+    "db:reset": "node src/db/migrate.js --reset",
+    "db:seed": "node src/db/seed.js",
+    "test": "node --test --test-concurrency=1",
+    "import:students": "node src/db/importStudents.js",
+    "demo": "node scripts/demoData.js",
+    "pretest": "node scripts/setupTestDb.js --if-missing",
+    "test:reset-db": "node scripts/setupTestDb.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.6",
+    "csv-parse": "^7.0.3",
+    "dotenv": "^18.0.8",
+    "express": "^5.3.0",
+    "express-rate-limit": "^8.7.1",
+    "helmet": "^8.3.0",
+    "jsonwebtoken": "^9.0.3",
+    "multer": "^2.5.0",
+    "mysql2": "^3.24.6",
+    "nodemailer": "^10.2.1",
+    "pdfjs-dist": "^6.4.299",
+    "pdfkit": "^0.20.2",
+    "qrcode": "^1.5.4",
+    "tesseract.js": "^7.0.0"
+  }
+}

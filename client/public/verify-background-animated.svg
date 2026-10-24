@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="1600" height="1000" preserveAspectRatio="xMidYMid slice" role="img" aria-label="A certificate with a QR code and seal being checked with a magnifying glass, beside a verified shield">
+  <style>
+    .fl, .fl2, .sweep, .pulse, .scan, .dot, .glow { transform-box: fill-box; transform-origin: center; }
+    .fl    { animation: fl 6s ease-in-out infinite; }
+    .fl2   { animation: fl 5s ease-in-out -2s infinite; }
+    .sweep { animation: sweep 8s ease-in-out infinite; }
+    .pulse { animation: pulse 2.6s ease-in-out infinite; }
+    .scan  { animation: scan 3.2s ease-in-out infinite; }
+    .glow  { animation: glow 3.6s ease-in-out infinite; }
+    .dot   { animation: dot 4s ease-in-out infinite; }
+    .d2 { animation-duration: 5s; animation-delay: -1s; }
+    .d3 { animation-duration: 3.4s; animation-delay: -2s; }
+    .d4 { animation-duration: 4.6s; animation-delay: -3s; }
+    @keyframes fl     { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+    @keyframes sweep  { 0%,100% { transform: translate(0,0); } 40% { transform: translate(70px,-60px); } 70% { transform: translate(30px,-20px); } }
+    @keyframes pulse  { 0%,100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+    @keyframes scan   { 0% { transform: translateY(0); opacity: 0; } 15% { opacity: .9; } 85% { opacity: .9; } 100% { transform: translateY(104px); opacity: 0; } }
+    @keyframes glow   { 0%,100% { opacity: .35; transform: scale(1); } 50% { opacity: .75; transform: scale(1.04); } }
+    @keyframes dot    { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-22px); } }
+    @media (prefers-reduced-motion: reduce) {
+      .fl, .fl2, .sweep, .pulse, .scan, .glow, .dot { animation: none; }
+    }
+  </style>
+
+  <rect width="1600" height="1000" fill="#F1F7F3"/>
+  <circle class="glow" cx="1170" cy="500" r="360" fill="#DDF0E5"/>
+  <circle cx="200" cy="900" r="300" fill="#E6F3EB"/>
+  <circle cx="1500" cy="120" r="140" fill="#E6F3EB"/>
+
+  <!-- certificate group floats -->
+  <g class="fl">
+    <rect x="880" y="250" width="540" height="400" rx="18" fill="#B9DCC8" transform="rotate(-6 1150 450)"/>
+    <rect x="920" y="220" width="540" height="400" rx="18" fill="#FFFFFF" stroke="#0F6B3A" stroke-width="6"/>
+    <rect x="946" y="246" width="488" height="348" rx="10" fill="none" stroke="#C9D8CF" stroke-width="3" stroke-dasharray="10 8"/>
+    <rect x="1030" y="284" width="320" height="20" rx="10" fill="#0F6B3A"/>
+    <rect x="1070" y="322" width="240" height="10" rx="5" fill="#C9D8CF"/>
+    <rect x="1090" y="344" width="200" height="10" rx="5" fill="#C9D8CF"/>
+    <rect x="1040" y="394" width="300" height="12" rx="6" fill="#8FA399"/>
+    <rect x="1070" y="420" width="240" height="9" rx="4.5" fill="#C9D8CF"/>
+
+    <!-- seal -->
+    <polygon points="1000,520 1020,590 1040,566 1060,590 1060,520" fill="#B3861A"/>
+    <g class="pulse">
+      <circle cx="1030" cy="510" r="44" fill="#E0A800"/>
+      <circle cx="1030" cy="510" r="32" fill="none" stroke="#FFFFFF" stroke-width="4"/>
+      <path d="M1016 510 L1026 520 L1046 498" fill="none" stroke="#14211A" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+
+    <!-- QR code with scan line -->
+    <g transform="translate(1290 440)">
+      <rect width="128" height="128" rx="6" fill="#FFFFFF" stroke="#14211A" stroke-width="3"/>
+      <g fill="#14211A">
+        <rect x="10" y="10" width="34" height="34"/><rect x="84" y="10" width="34" height="34"/><rect x="10" y="84" width="34" height="34"/>
+        <rect x="54" y="12" width="8" height="8"/><rect x="66" y="22" width="8" height="8"/><rect x="54" y="34" width="8" height="8"/>
+        <rect x="12" y="54" width="8" height="8"/><rect x="30" y="58" width="8" height="8"/><rect x="48" y="54" width="8" height="8"/>
+        <rect x="66" y="54" width="8" height="8"/><rect x="84" y="58" width="8" height="8"/><rect x="104" y="54" width="8" height="8"/>
+        <rect x="56" y="72" width="8" height="8"/><rect x="74" y="78" width="8" height="8"/><rect x="92" y="74" width="8" height="8"/>
+        <rect x="110" y="80" width="8" height="8"/><rect x="56" y="92" width="8" height="8"/><rect x="72" y="104" width="8" height="8"/>
+        <rect x="92" y="96" width="8" height="8"/><rect x="108" y="106" width="8" height="8"/><rect x="58" y="110" width="8" height="8"/>
+      </g>
+      <g fill="#FFFFFF">
+        <rect x="17" y="17" width="20" height="20"/><rect x="91" y="17" width="20" height="20"/><rect x="17" y="91" width="20" height="20"/>
+      </g>
+      <g fill="#14211A">
+        <rect x="22" y="22" width="10" height="10"/><rect x="96" y="22" width="10" height="10"/><rect x="22" y="96" width="10" height="10"/>
+      </g>
+      <rect class="scan" x="6" y="8" width="116" height="6" rx="3" fill="#0F6B3A"/>
+    </g>
+  </g>
+
+  <!-- magnifying glass sweeps over the certificate -->
+  <g class="sweep">
+    <circle cx="900" cy="620" r="88" fill="#FFFFFF" fill-opacity="0.55" stroke="#0F6B3A" stroke-width="16"/>
+    <circle cx="900" cy="620" r="40" fill="#0F6B3A"/>
+    <path d="M882 620 L896 634 L922 604" fill="none" stroke="#FFFFFF" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M964 684 L1050 770" stroke="#0F6B3A" stroke-width="24" stroke-linecap="round"/>
+  </g>
+
+  <!-- verified shield bobs -->
+  <g class="fl2">
+    <path d="M1380 90 L1432 112 V166 C1432 204 1406 226 1380 238 C1354 226 1328 204 1328 166 V112 Z" fill="#0F6B3A"/>
+    <path d="M1358 160 L1374 176 L1404 140" fill="none" stroke="#FFFFFF" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- floating dots -->
+  <circle class="dot" cx="1010" cy="120" r="9" fill="#E0A800"/>
+  <circle class="dot d2" cx="1230" cy="110" r="7" fill="#0F6B3A"/>
+  <circle class="dot d3" cx="1520" cy="330" r="8" fill="#E0A800"/>
+  <circle class="dot d4" cx="790" cy="400" r="7" fill="#0F6B3A"/>
+  <circle class="dot d2" cx="1480" cy="760" r="9" fill="#0F6B3A"/>
+  <circle class="dot d3" cx="1280" cy="820" r="7" fill="#E0A800"/>
+</svg>
