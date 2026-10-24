@@ -4,9 +4,10 @@
   "private": true,
   "description": "Automated Student Clearance and Certificate Issuance System",
   "scripts": {
-    "dev": "node scripts/dev.js",
+    "dev": "node scripts/dev.cjs",
     "install:all": "npm --prefix server install && npm --prefix client install",
     "test": "npm --prefix server test",
     "demo": "npm --prefix server run demo"
-  }
+  },
+  "type": "module"
 }

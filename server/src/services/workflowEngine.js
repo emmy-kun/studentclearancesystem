@@ -9,8 +9,6 @@
 // uploaded file, so a stage's slots are derived from required_documents, the
 // student (levels_count, accommodation_type) and the stage's form_data.
 import crypto from 'node:crypto';
-import fs from 'node:fs/promises';
-import path from 'node:path';
 import pool, { withTransaction } from '../config/db.js';
 import env from '../config/env.js';
 import httpError from '../utils/httpError.js';
@@ -21,6 +19,7 @@ import { hasForm, sanitizeForm, missingFormFields, FIELD_LABELS } from './stageF
 import { issueCertificate } from './certificateService.js';
 import { issueSlip, slipTitle } from './slipService.js';
 import { createLetter } from './letterService.js';
+import { deleteFile } from './storage.js';
 
 export const EDITABLE = ['awaiting_submission', 'rejected'];
 
@@ -203,17 +202,10 @@ function goesStraightToReview(ctx, stage) {
   return stage.review_mode === 'manual' && !hasForm(stage.stage_key) && stageDocsFor(ctx, stage.stage_key).length === 0;
 }
 
-/** Absolute path of a stored upload; refuses anything that escapes the uploads folder. */
-export function uploadPath(relativePath) {
-  const abs = path.resolve(env.uploads.dir, relativePath);
-  if (!abs.startsWith(path.resolve(env.uploads.dir) + path.sep)) throw httpError(400, 'Invalid file path');
-  return abs;
-}
+export { uploadPath } from './storage.js';
 
 export async function deleteFiles(relativePaths) {
-  for (const p of relativePaths) {
-    await fs.unlink(uploadPath(p)).catch(() => {});
-  }
+  for (const p of relativePaths) await deleteFile(p);
 }
 
 // ---------------------------------------------------------------------------

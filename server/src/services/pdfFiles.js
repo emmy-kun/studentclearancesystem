@@ -1,35 +1,30 @@
 // Shared helpers for generated PDFs (application letter, certificate, reports).
-// Files live in the private uploads folder and are only served through
+// Files are kept in private storage (services/storage.js) and only served through
 // authenticated routes.
 import crypto from 'node:crypto';
-import fs from 'node:fs';
-import path from 'node:path';
 import PDFDocument from 'pdfkit';
-import env from '../config/env.js';
+import { saveFile } from './storage.js';
 
 /**
- * Create a PDF at uploads/<subdir>/<random>.pdf. `draw(doc)` lays out the
- * pages (may be async). Resolves to the path relative to the uploads folder.
+ * Create a PDF stored as <subdir>/<random>.pdf. `draw(doc)` lays out the
+ * pages (may be async). Resolves to the stored (relative) path.
  */
 export async function writePdf(subdir, draw, options = {}) {
-  const dir = path.join(env.uploads.dir, subdir);
-  fs.mkdirSync(dir, { recursive: true });
   const relativePath = `${subdir}/${crypto.randomBytes(16).toString('hex')}.pdf`;
-  const absPath = path.join(env.uploads.dir, relativePath);
-
   const doc = new PDFDocument({ size: 'A4', margin: 56, ...options });
-  const out = fs.createWriteStream(absPath);
+  const chunks = [];
   const done = new Promise((resolve, reject) => {
-    out.on('finish', resolve);
-    out.on('error', reject);
+    doc.on('data', (c) => chunks.push(c));
+    doc.on('end', resolve);
+    doc.on('error', reject);
   });
-  doc.pipe(out);
   try {
     await draw(doc);
   } finally {
     doc.end();
   }
   await done;
+  await saveFile(relativePath, Buffer.concat(chunks), 'application/pdf');
   return relativePath;
 }
 

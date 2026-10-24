@@ -7,7 +7,7 @@ import { notifyReviewers } from './notificationService.js';
 import { initialOcrStatus, queueOcr } from './ocrService.js';
 import {
   EDITABLE, loadContext, requestIdForStage, findStage, assertOwner, stageDocsFor,
-  computeSlots, slotKey, slotLabel, deleteFiles, uploadPath,
+  computeSlots, slotKey, slotLabel, deleteFiles,
 } from './workflowEngine.js';
 
 const MAX_AMOUNT = 10_000_000;
@@ -182,5 +182,5 @@ export async function getDocumentFile(user, documentId) {
     (user.userType === 'staff' && user.role === doc.reviewer_role && inScope(user, student));
   if (!allowed) throw httpError(404, 'Document not found');
 
-  return { absPath: uploadPath(doc.file_path), mimeType: doc.mime_type, originalName: doc.original_name };
+  return { relativePath: doc.file_path, mimeType: doc.mime_type, originalName: doc.original_name };
 }

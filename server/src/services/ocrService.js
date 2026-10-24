@@ -9,7 +9,7 @@
 // so students never wait for it.
 import pool from '../config/db.js';
 import env from '../config/env.js';
-import { uploadPath } from './workflowEngine.js';
+import { readFile } from './storage.js';
 
 const IMAGE = /^image\/(jpeg|png|webp)$/;
 const MIN_TEXT = 15; // fewer readable characters than this = could not read
@@ -66,11 +66,12 @@ export function matchIdentity(text, { full_name, matric_no }) {
   return { status, reg_found: regFound, name_found: nameFound, name_parts_found: found.length, name_parts: parts.length };
 }
 
-/** Text of each page of a PDF (empty strings for scanned pages with no text layer). */
-export async function pdfPageTexts(absPath) {
+/** Text of each page of a PDF given as a Buffer or a file path (empty strings for scanned pages with no text layer). */
+export async function pdfPageTexts(input) {
   const fs = await import('node:fs/promises');
   const { getDocument } = await import('pdfjs-dist/legacy/build/pdf.mjs');
-  const task = getDocument({ data: new Uint8Array(await fs.readFile(absPath)), useSystemFonts: true, isEvalSupported: false });
+  const bytes = Buffer.isBuffer(input) ? input : await fs.readFile(input);
+  const task = getDocument({ data: new Uint8Array(bytes), useSystemFonts: true, isEvalSupported: false });
   try {
     const pdf = await task.promise;
     const pages = [];
@@ -103,11 +104,13 @@ async function readDocument(documentId) {
   );
   if (!doc) return;
 
+  const bytes = await readFile(doc.file_path);
+  if (!bytes) return;
   let status;
   let result;
   if (doc.mime_type === 'application/pdf') {
     // Typed PDFs (e.g. a graduation list) carry real text, which is far more reliable than OCR.
-    const pages = await pdfPageTexts(uploadPath(doc.file_path));
+    const pages = await pdfPageTexts(bytes);
     const all = pages.join('\n');
     if (all.replace(/\s/g, '').length < MIN_TEXT) {
       status = 'unreadable';
@@ -121,7 +124,7 @@ async function readDocument(documentId) {
     result = { reason: 'unsupported' };
   } else {
     const worker = await getWorker();
-    const { data } = await worker.recognize(uploadPath(doc.file_path));
+    const { data } = await worker.recognize(bytes);
     const readable = data.text.replace(/\s/g, '').length >= MIN_TEXT && data.confidence >= MIN_CONFIDENCE;
     result = { ...matchIdentity(data.text, doc), confidence: Math.round(data.confidence) };
     status = readable || result.status !== 'no_match' ? result.status : 'unreadable';

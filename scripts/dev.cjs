@@ -1,5 +1,6 @@
 // Starts the API (server, :4000) and the website (client, :5173) together.
 // Run from clearance-system:  npm run dev    (Ctrl+C stops both)
+// A .cjs file because the root package.json is an ES module (for the Vercel function in api/).
 const { spawn } = require('node:child_process');
 const path = require('node:path');
 

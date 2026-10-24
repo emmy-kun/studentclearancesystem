@@ -79,3 +79,22 @@ Every in-app notification is then also emailed to the person it concerns.
 Password reset links ("Forgot password?" on both login pages) are sent the same way. Addresses ending in
 `.test` (the seeded staff accounts) cannot receive email; with email off, or for those addresses, the
 reset link is printed in the server console instead.
+
+## Deploying (Vercel + Aiven MySQL)
+
+The website and the API run on Vercel (one project: `vercel.json`, API entry `api/index.js`);
+the database is a free Aiven MySQL service. Uploaded files and generated PDFs are kept in the
+database (`STORAGE_DRIVER=db`), because Vercel has no permanent disk. Background OCR is off on
+Vercel (`OCR_ENABLED=false`); reviewers still confirm names with the tick box.
+
+1. Aiven: create a free MySQL service; note host, port, user, password, database (`defaultdb`)
+   and download the CA certificate (`ca.pem`, keep it in `clearance-system/`, it is git-ignored).
+2. Copy local data to Aiven: create `clearance-system/.env.hosted` with `TARGET_DB_HOST`,
+   `TARGET_DB_PORT`, `TARGET_DB_USER`, `TARGET_DB_PASSWORD`, `TARGET_DB_NAME`,
+   `TARGET_DB_SSL_CA_FILE=ca.pem`, then run `node server/scripts/copyToHosted.js`.
+3. Vercel: import the GitHub repo (no settings to change; `vercel.json` has them) and add these
+   Environment Variables: `DB_HOST DB_PORT DB_USER DB_PASSWORD DB_NAME DB_SSL_CA` (contents of
+   ca.pem) `DB_POOL_SIZE=3 STORAGE_DRIVER=db OCR_ENABLED=false UPLOAD_MAX_MB=4 JWT_SECRET
+   JWT_EXPIRES_IN CURRENT_SESSION APP_BASE_URL` (the Vercel address) `PAYSTACK_SECRET_KEY
+   PAYSTACK_PUBLIC_KEY EMAIL_ENABLED EMAIL_PROVIDER EMAILJS_*`.
+4. Paystack dashboard: set the webhook URL to `<APP_BASE_URL>/api/payments/webhook/paystack`.

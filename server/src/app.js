@@ -17,6 +17,8 @@ import registryRoutes from './routes/registry.js';
 
 const app = express();
 
+// On Vercel the app sits behind Vercel's proxy: take the visitor's IP from it (for rate limits).
+if (process.env.VERCEL) app.set('trust proxy', 1);
 app.use(helmet());
 app.use(cors({ origin: env.appBaseUrl, credentials: true }));
 // The Paystack webhook needs the raw body for its signature, so it is mounted before the JSON parser.

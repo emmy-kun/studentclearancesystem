@@ -34,6 +34,9 @@ const env = {
     user: required('DB_USER', 'root'),
     password: process.env.DB_PASSWORD ?? '',
     database: required('DB_NAME', 'clearance_db') + (testing ? '_test' : ''),
+    // Hosted MySQL (e.g. Aiven) needs TLS: DB_SSL_CA holds the provider's CA certificate (PEM text).
+    sslCa: (process.env.DB_SSL_CA || '').replace(/\\n/g, '\n').trim(),
+    poolSize: Number(process.env.DB_POOL_SIZE || 10),
   },
 
   jwt: {
@@ -59,6 +62,8 @@ const env = {
 
   uploads: {
     dir: path.join(SERVER_DIR, testing ? 'uploads-test' : 'uploads'),
+    // 'disk' (server/uploads) or 'db' (stored_files table; used on Vercel). Tests always use disk.
+    driver: testing ? 'disk' : process.env.STORAGE_DRIVER || 'disk',
     maxBytes: Number(process.env.UPLOAD_MAX_MB || 5) * 1024 * 1024,
   },
 

@@ -5,6 +5,7 @@ import { useAuth } from '../../auth/AuthContext.jsx';
 import { Back, Camera, Card, Download } from '../../components/Icons.jsx';
 import { DocChip, DocThumb, ErrorText, PageLoading, PaymentChip, useToast } from '../../components/ui.jsx';
 import { OFFICE, levelLabel } from '../../stageText.js';
+import { shrinkImage, MAX_UPLOAD_BYTES } from '../../shrinkImage.js';
 import { useClearance } from './useClearance.js';
 
 const EDITABLE = ['awaiting_submission', 'rejected'];
@@ -164,10 +165,16 @@ function SlotCard({ slot, stage, onUpdated }) {
     fileRef.current?.click();
   }
 
-  async function upload(file) {
-    if (!file) return;
+  async function upload(picked) {
+    if (!picked) return;
     setBusy(true);
     setError(null);
+    const file = await shrinkImage(picked);
+    if (file.size > MAX_UPLOAD_BYTES) {
+      setBusy(false);
+      if (fileRef.current) fileRef.current.value = '';
+      return setError('This file is larger than 4 MB. Take a photo instead, or upload a smaller PDF.');
+    }
     const form = new FormData();
     form.append('required_doc_id', slot.required_doc_id);
     form.append('level', slot.level);
@@ -487,7 +494,7 @@ export default function StagePage() {
                 <SlotCard key={`${slot.required_doc_id}:${slot.level}:${slot.document?.document_id || 'new'}`} slot={slot} stage={stage} onUpdated={setData} />
               ))}
             </div>
-            <p className="help" style={{ margin: 0 }}>Photos must show the whole document, with all text readable. JPG, PNG or PDF, up to 5 MB.</p>
+            <p className="help" style={{ margin: 0 }}>Photos must show the whole document, with all text readable. JPG, PNG or PDF. Large photos are made smaller automatically; PDFs up to 4 MB.</p>
           </section>
         )}
         {stage.has_form && stage.stage_key === 'library' && stage.slots.length === 0 && editable && (

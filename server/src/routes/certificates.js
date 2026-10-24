@@ -1,10 +1,9 @@
-import fs from 'node:fs';
 import { Router } from 'express';
 import rateLimit from 'express-rate-limit';
 import { requireAuth } from '../middleware/auth.js';
 import { requireStudent, requireRole } from '../middleware/requireRole.js';
 import { verifyCertificate, verifyCertificateByNumber, getMyCertificate, getCertificateFile, getLetterFile } from '../services/certificateService.js';
-import { uploadPath } from '../services/workflowEngine.js';
+import { sendStoredFile } from '../services/storage.js';
 import { getSlipFile } from '../services/slipService.js';
 import httpError, { intParam } from '../utils/httpError.js';
 
@@ -12,14 +11,7 @@ import httpError, { intParam } from '../utils/httpError.js';
 const router = Router();
 
 function sendPdf(res, { relativePath, filename }, disposition = 'attachment') {
-  const abs = uploadPath(relativePath);
-  if (!fs.existsSync(abs)) throw httpError(404, 'File is missing from storage');
-  res.set({
-    'Content-Type': 'application/pdf',
-    'Content-Disposition': `${disposition}; filename="${filename.replace(/[^\w.\-]+/g, '_')}"`,
-    'Cache-Control': 'private, no-store',
-  });
-  res.sendFile(abs);
+  return sendStoredFile(res, relativePath, { contentType: 'application/pdf', disposition: `${disposition}; filename="${filename.replace(/[^\w.\-]+/g, '_')}"` });
 }
 
 // GET /api/letter/:requestId/download  (student, Audit, Admin)

@@ -167,6 +167,16 @@ CREATE TABLE IF NOT EXISTS certificates (
   FOREIGN KEY (degree_issued_by) REFERENCES staff(staff_id)
 ) ENGINE=InnoDB;
 
+-- Uploaded documents and generated PDFs when STORAGE_DRIVER=db (hosting without a
+-- permanent disk, e.g. Vercel). With the default disk driver this table stays empty.
+CREATE TABLE IF NOT EXISTS stored_files (
+  path VARCHAR(255) PRIMARY KEY,
+  mime_type VARCHAR(100) NOT NULL,
+  size INT NOT NULL,
+  content LONGBLOB NOT NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
 -- Forgot-password links. Only a SHA-256 hash of the token is stored; the token itself
 -- is only in the emailed link. One use, short expiry.
 CREATE TABLE IF NOT EXISTS password_resets (
