@@ -191,7 +191,7 @@ export function RegistryCollected() {
       ) : items.length === 0 ? (
         <div className="card empty">No degree certificates have been collected yet.</div>
       ) : (
-        <div className="table-wrap"><table className="list">
+        <div className="table-wrap"><table className="list stack-sm">
           <thead>
             <tr>
               <th>Student</th>

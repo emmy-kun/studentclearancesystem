@@ -14,7 +14,10 @@ import dotenv from 'dotenv';
 import mysql from 'mysql2/promise';
 
 const { default: env, ROOT_DIR, SERVER_DIR } = await import('../src/config/env.js');
-const { default: source } = await import('../src/config/db.js');
+// DATE columns are read as text so they copy unchanged; DATETIMEs are read as exact
+// moments and written in UTC, the hosted server's (and Vercel's) time zone.
+const { host, port, user, password, database } = env.db;
+const source = await mysql.createConnection({ host, port, user, password, database, dateStrings: ['DATE'], charset: 'utf8mb4' });
 
 const hosted = dotenv.parse(fs.readFileSync(path.join(ROOT_DIR, '.env.hosted')));
 const force = process.argv.includes('--force');
@@ -41,6 +44,7 @@ const target = await mysql.createConnection({
   ssl: { ca: fs.readFileSync(path.resolve(ROOT_DIR, need('TARGET_DB_SSL_CA_FILE'))), rejectUnauthorized: true },
   multipleStatements: true,
   charset: 'utf8mb4',
+  timezone: 'Z',
 });
 
 // JSON columns come back as objects; send them back as JSON text.

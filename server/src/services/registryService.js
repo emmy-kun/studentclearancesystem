@@ -7,6 +7,7 @@ import httpError from '../utils/httpError.js';
 import { logAudit, actorFrom } from './auditLog.js';
 import { notifyStudent } from './notificationService.js';
 import { longDate } from './pdfFiles.js';
+import { normalizeRegNo } from '../utils/regNo.js';
 
 const CERT_NO = /^(UNN-)?CLR-\d{4}-\d{6}$/;
 const MATRIC = /^\d{4}\/\d{5,7}$/;
@@ -41,7 +42,7 @@ function view(row) {
  * verification code / address from the certificate's QR code.
  */
 export async function lookup(q) {
-  const raw = String(q || '').trim();
+  const raw = normalizeRegNo(q);
   const last = raw.split('/verify/').pop().split(/[?#]/)[0].trim();
   let row;
   if (CODE.test(last.toLowerCase())) {

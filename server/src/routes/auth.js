@@ -7,6 +7,7 @@ import { loginLimiter, lookupLimiter, resetLimiter } from '../middleware/rateLim
 import { requestReset, checkReset, resetPassword, GENERIC_REPLY } from '../services/passwordResetService.js';
 import { logAudit } from '../services/auditLog.js';
 import httpError, { requireFields, normalize } from '../utils/httpError.js';
+import { normalizeRegNo } from '../utils/regNo.js';
 
 const router = Router();
 
@@ -92,7 +93,7 @@ export async function getProfile(user) {
 // GET /api/auth/student/lookup?matric_no=2022/252133
 // Login-page name preview. Only students who have signed up are shown.
 router.get('/student/lookup', lookupLimiter, async (req, res) => {
-  const matric = String(req.query.matric_no || '').trim();
+  const matric = normalizeRegNo(req.query.matric_no);
   if (!matric) throw httpError(400, 'matric_no is required');
   const [[s]] = await pool.query(
     `SELECT s.full_name, s.password_hash, d.name AS department
@@ -115,7 +116,7 @@ router.post('/student/signup', loginLimiter, async (req, res) => {
 
   const [[s]] = await pool.query(
     'SELECT student_id, full_name, department_id, password_hash FROM students WHERE matric_no = ?',
-    [req.body.matric_no.trim()]
+    [normalizeRegNo(req.body.matric_no)]
   );
   if (!s || normalize(s.full_name) !== normalize(req.body.full_name)) {
     throw httpError(404, 'We could not find this reg number and name on the class list. Enter your name exactly as it appears on the list.');

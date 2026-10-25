@@ -9,6 +9,7 @@ import brand from '../config/brand.js';
 import httpError from '../utils/httpError.js';
 import { writePdf, longDate, titleCase } from './pdfFiles.js';
 import { verifySlip } from './slipService.js';
+import { normalizeRegNo } from '../utils/regNo.js';
 
 const GREEN = '#146C3C';
 const CODE_FORMAT = /^[a-f0-9]{64}$/;
@@ -155,7 +156,7 @@ export async function verifyCertificate(code) {
  */
 export async function verifyCertificateByNumber(certificateNo, matricNo) {
   const no = String(certificateNo || '').trim().toUpperCase();
-  const matric = String(matricNo || '').trim();
+  const matric = normalizeRegNo(matricNo);
   // Older certificates were numbered UNN-CLR-…; they still verify.
   if (!/^(UNN-)?CLR-\d{4}-\d{6}$/.test(no) || !matric) return { valid: false };
   const [[row]] = await pool.query(`${CERTIFICATE_QUERY} c.certificate_no = ? AND s.matric_no = ?`, [no, matric]);

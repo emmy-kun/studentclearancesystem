@@ -10,7 +10,7 @@ export function StageTable({ items, showStage, showDecision }) {
   const navigate = useNavigate();
   if (items.length === 0) return <div className="card empty">Nothing here right now.</div>;
   return (
-    <div className="table-wrap"><table className="list">
+    <div className="table-wrap"><table className="list stack-sm">
       <thead>
         <tr>
           <th>Student</th>

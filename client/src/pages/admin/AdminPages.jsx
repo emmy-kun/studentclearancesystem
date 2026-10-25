@@ -93,7 +93,7 @@ export function AdminRequests() {
       ) : data.items.length === 0 ? (
         <div className="card empty">No clearance requests match.</div>
       ) : (
-        <div className="table-wrap"><table className="list">
+        <div className="table-wrap"><table className="list stack-sm">
           <thead>
             <tr>
               <th>Student</th>
@@ -244,7 +244,7 @@ export function AdminStudents() {
   return (
     <>
       <h1>Students</h1>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 12, marginBottom: 16 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(320px, 100%), 1fr))', gap: 12, marginBottom: 16 }}>
         <ImportCard onDone={reload} />
       </div>
       <div className="row" style={{ flexWrap: 'wrap', marginBottom: 14 }}>
@@ -257,7 +257,7 @@ export function AdminStudents() {
       {!data ? (
         !error && <PageLoading />
       ) : (
-        <div className="table-wrap"><table className="list">
+        <div className="table-wrap"><table className="list stack-sm">
           <thead>
             <tr>
               <th>Student</th>
@@ -413,7 +413,7 @@ export function AdminStaff() {
       {!items ? (
         !error && <PageLoading />
       ) : (
-        <div className="table-wrap"><table className="list">
+        <div className="table-wrap"><table className="list stack-sm">
           <thead>
             <tr><th>Name</th><th>Role</th><th className="hide-sm">Scope</th><th>Status</th><th /></tr>
           </thead>
@@ -656,7 +656,7 @@ export function AdminAuditLog() {
       {!data ? (
         !error && <PageLoading />
       ) : (
-        <div className="table-wrap"><table className="list">
+        <div className="table-wrap"><table className="list stack-sm">
           <thead>
             <tr><th>When</th><th>Who</th><th>Action</th><th className="hide-sm">Details</th></tr>
           </thead>

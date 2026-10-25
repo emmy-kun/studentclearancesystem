@@ -120,6 +120,23 @@ test('student logs in with reg number and password', async () => {
   assert.equal(me.body.user.matric_no, STUDENT_MATRIC);
 });
 
+test('reg numbers typed with a space, dash or no slash (phone keyboards) still work', async () => {
+  const digits = STUDENT_MATRIC.replace('/', '');
+  for (const typed of [STUDENT_MATRIC.replace('/', ' '), STUDENT_MATRIC.replace('/', '-'), digits, ` ${STUDENT_MATRIC} `]) {
+    assert.equal((await api('GET', `/auth/student/lookup?matric_no=${encodeURIComponent(typed)}`)).status, 200, typed);
+    assert.equal((await api('POST', '/auth/student/login', { body: { matric_no: typed, password: STUDENT_PASSWORD } })).status, 200, typed);
+  }
+});
+
+test('normalizeRegNo leaves anything that is not a reg number alone', async () => {
+  const { normalizeRegNo } = await import('../src/utils/regNo.js');
+  assert.equal(normalizeRegNo('2022248400'), '2022/248400');
+  assert.equal(normalizeRegNo('2022\\248400'), '2022/248400');
+  assert.equal(normalizeRegNo('CLR-2026-000020'), 'CLR-2026-000020');
+  assert.equal(normalizeRegNo('someone@gmail.com'), 'someone@gmail.com');
+  assert.equal(normalizeRegNo(undefined), '');
+});
+
 test('student login: wrong password and unregistered reg number give the same error', async () => {
   const a = await api('POST', '/auth/student/login', { body: { matric_no: STUDENT_MATRIC, password: 'WrongPass000' } });
   const b = await api('POST', '/auth/student/login', { body: { matric_no: '2022/245074', password: 'WrongPass000' } });

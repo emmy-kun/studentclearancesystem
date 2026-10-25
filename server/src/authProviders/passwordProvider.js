@@ -11,6 +11,7 @@
 import bcrypt from 'bcrypt';
 import pool from '../config/db.js';
 import { requireFields } from '../utils/httpError.js';
+import { normalizeRegNo } from '../utils/regNo.js';
 
 export const name = 'password';
 
@@ -23,7 +24,7 @@ export async function authenticate(body) {
     `SELECT s.student_id, s.department_id, d.faculty_id, s.password_hash
        FROM students s JOIN departments d ON d.department_id = s.department_id
       WHERE s.matric_no = ?`,
-    [body.matric_no.trim()]
+    [normalizeRegNo(body.matric_no)]
   );
   const ok = await bcrypt.compare(body.password, student?.password_hash ?? DUMMY_HASH);
   return student?.password_hash && ok ? student : null;

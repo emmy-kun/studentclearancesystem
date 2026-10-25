@@ -5,6 +5,7 @@ import { useAuth, homeFor } from '../../auth/AuthContext.jsx';
 import AuthLayout, { AuthField } from '../../components/AuthLayout.jsx';
 import { IdCard, Lock, Mail, User } from '../../components/Icons.jsx';
 import { ErrorText } from '../../components/ui.jsx';
+import { normalizeRegNo, REG_NO_INPUT } from '../../regNo.js';
 
 /** Sign-up: reg number + name must match the class list; email and password are the student's own. */
 export default function StudentSignup() {
@@ -22,7 +23,8 @@ export default function StudentSignup() {
     setBusy(true);
     setError(null);
     try {
-      const { confirm, ...body } = form;
+      const { confirm, ...rest } = form;
+      const body = { ...rest, matric_no: normalizeRegNo(rest.matric_no) };
       const data = await api.post('/auth/student/signup', body);
       navigate(homeFor(signIn(data)), { replace: true });
     } catch (err) {
@@ -43,7 +45,7 @@ export default function StudentSignup() {
       }
     >
       <form className="stack" style={{ gap: 16 }} onSubmit={submit}>
-        <AuthField id="matric_no" label="Reg number" icon={IdCard} inputMode="numeric" placeholder="e.g. 2022/252133" value={form.matric_no} onChange={set('matric_no')} required />
+        <AuthField id="matric_no" label="Reg number" icon={IdCard} {...REG_NO_INPUT} placeholder="e.g. 2022/252133" value={form.matric_no} onChange={set('matric_no')} required />
         <AuthField id="full_name" label="Full name" icon={User} autoComplete="name" placeholder="SURNAME FIRSTNAME MIDDLENAME" value={form.full_name} onChange={set('full_name')} hint="Surname first, as on the class list." required />
         <AuthField id="email" label="Email address" icon={Mail} type="email" autoComplete="email" placeholder="you@example.com" value={form.email} onChange={set('email')} hint="Clearance updates are sent here." required />
         <div className="field-row">

@@ -4,6 +4,7 @@ import { api, formatDate } from '../api/client.js';
 import AuthLayout, { AuthField } from '../components/AuthLayout.jsx';
 import { Alert, Check, IdCard, Shield } from '../components/Icons.jsx';
 import { Spinner } from '../components/ui.jsx';
+import { normalizeRegNo, REG_NO_INPUT } from '../regNo.js';
 
 /**
  * Public verification, no login: type the certificate number and the student's reg
@@ -36,7 +37,7 @@ export default function Verify() {
   function submit(e) {
     e.preventDefault();
     if (mode === 'number') {
-      check(`/verify?certificate_no=${encodeURIComponent(certNo.trim())}&matric_no=${encodeURIComponent(matric.trim())}`);
+      check(`/verify?certificate_no=${encodeURIComponent(certNo.trim())}&matric_no=${encodeURIComponent(normalizeRegNo(matric))}`);
     } else {
       const c = input.trim().split('/').pop();
       if (c) navigate(`/verify/${c}`);
@@ -62,7 +63,7 @@ export default function Verify() {
         {mode === 'number' ? (
           <>
             <AuthField id="certificate_no" label="Certificate number" icon={Shield} value={certNo} onChange={(e) => setCertNo(e.target.value)} placeholder="e.g. CLR-2026-000019" spellCheck={false} autoCapitalize="characters" required />
-            <AuthField id="matric_no" label="Reg number" icon={IdCard} inputMode="numeric" value={matric} onChange={(e) => setMatric(e.target.value)} placeholder="e.g. 2022/252133" required />
+            <AuthField id="matric_no" label="Reg number" icon={IdCard} {...REG_NO_INPUT} value={matric} onChange={(e) => setMatric(e.target.value)} placeholder="e.g. 2022/252133" required />
           </>
         ) : (
           <AuthField id="code" label="Verification code" icon={Shield} value={input} onChange={(e) => setInput(e.target.value)} placeholder="Code from the certificate or slip" spellCheck={false} required />

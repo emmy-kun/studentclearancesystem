@@ -8,6 +8,7 @@ import env from '../config/env.js';
 import httpError from '../utils/httpError.js';
 import { logAudit } from './auditLog.js';
 import { sendEmail } from './emailService.js';
+import { normalizeRegNo } from '../utils/regNo.js';
 
 export const RESET_MINUTES = 30;
 const RESEND_SECONDS = 60; // at most one new link per account per minute
@@ -19,7 +20,7 @@ export const GENERIC_REPLY = `If an account matches what you entered, we have em
 
 /** The account for the reset request: students by reg number or email, staff by email. */
 async function findAccount(userType, identifier) {
-  const value = String(identifier || '').trim();
+  const value = normalizeRegNo(identifier);
   if (!value) return null;
   if (userType === 'student') {
     const byEmail = value.includes('@');

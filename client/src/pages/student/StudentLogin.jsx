@@ -5,6 +5,7 @@ import { useAuth, homeFor } from '../../auth/AuthContext.jsx';
 import AuthLayout, { AuthField } from '../../components/AuthLayout.jsx';
 import { IdCard, Key, Lock } from '../../components/Icons.jsx';
 import { ErrorText, Spinner } from '../../components/ui.jsx';
+import { normalizeRegNo, REG_NO_INPUT } from '../../regNo.js';
 
 const MATRIC = /^\d{4}\/\d{5,7}$/;
 const initials = (name) => name.split(/\s+/).slice(0, 2).map((n) => n[0]).join('');
@@ -28,7 +29,7 @@ export default function StudentLogin() {
     setChosen(false);
     setPassword('');
     setError(null);
-    const value = matric.trim();
+    const value = normalizeRegNo(matric);
     if (!MATRIC.test(value)) {
       setLookup({ state: 'idle' });
       return undefined;
@@ -52,7 +53,7 @@ export default function StudentLogin() {
     setBusy(true);
     setError(null);
     try {
-      const data = await api.post('/auth/student/login', { matric_no: matric.trim(), password });
+      const data = await api.post('/auth/student/login', { matric_no: normalizeRegNo(matric), password });
       navigate(homeFor(signIn(data)), { replace: true });
     } catch (err) {
       setError(err);
@@ -79,7 +80,7 @@ export default function StudentLogin() {
       }
     >
       <form ref={formRef} className="stack" style={{ gap: 16 }} onSubmit={submit}>
-        <AuthField id="matric" label="Reg number" icon={IdCard} inputMode="numeric" autoComplete="username" placeholder="e.g. 2022/252133" value={matric} onChange={(e) => setMatric(e.target.value)} autoFocus />
+        <AuthField id="matric" label="Reg number" icon={IdCard} {...REG_NO_INPUT} autoComplete="username" placeholder="e.g. 2022/252133" value={matric} onChange={(e) => setMatric(e.target.value)} autoFocus />
 
         {lookup.state === 'loading' && (
           <div className="row muted small">
@@ -88,7 +89,7 @@ export default function StudentLogin() {
         )}
         {lookup.state === 'missing' && (
           <div className="banner amber small">
-            No clearance account for this reg number yet. <Link to={`/student/signup?matric=${encodeURIComponent(matric.trim())}`}>Create your account</Link>
+            No clearance account for this reg number yet. <Link to={`/student/signup?matric=${encodeURIComponent(normalizeRegNo(matric))}`}>Create your account</Link>
           </div>
         )}
         {lookup.state === 'error' && <ErrorText error={lookup.message} />}
@@ -112,7 +113,7 @@ export default function StudentLogin() {
               </span>
             </div>
             <AuthField id="password" label="Password" icon={Lock} type="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} />
-            <Link className="forgot-link" to={`/student/forgot-password?matric=${encodeURIComponent(matric.trim())}`}>
+            <Link className="forgot-link" to={`/student/forgot-password?matric=${encodeURIComponent(normalizeRegNo(matric))}`}>
               <Key /> Forgot password?
             </Link>
             <ErrorText error={error} />

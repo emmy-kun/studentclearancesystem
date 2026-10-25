@@ -72,7 +72,7 @@ img { max-width: 100%; display: block; }
 .center { text-align: center; }
 
 /* ---------- cards ---------- */
-.card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); min-width: 0; } /* min-width: lets cards shrink inside grids on small phones */
 .card-title { font-size: 16px; font-weight: 700; margin-bottom: 12px; }
 .card.link { cursor: pointer; text-decoration: none; color: inherit; display: block; transition: border-color .15s; }
 .card.link:hover { border-color: #c6d0cb; }
@@ -121,7 +121,8 @@ img { max-width: 100%; display: block; }
 .input:focus, .select:focus, .textarea:focus { border-color: var(--green); }
 .input:disabled, .textarea:disabled { background: #f6f8f7; color: var(--muted); }
 .textarea { min-height: 96px; resize: vertical; }
-.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.field-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+@media (max-width: 420px) { .field-row { grid-template-columns: minmax(0, 1fr); } } /* paired fields stack on narrow phones */
 .help { font-size: 13px; color: var(--muted); }
 .error-text { color: var(--red); font-size: 14px; }
 
@@ -270,10 +271,23 @@ details.help-more ul { margin: 6px 0 0; padding-left: 18px; }
   .staff-main { background-position: center, center 55%; }
   .staff-shell { flex-direction: column; }
   .sidebar { display: none; }
-  .mobile-staff-bar { display: flex; background: var(--green); color: #fff; padding: 12px 16px; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
-  .mobile-staff-bar nav { display: flex; gap: 4px; flex-wrap: wrap; }
-  .mobile-staff-bar a { color: #fff; text-decoration: none; font-size: 14px; font-weight: 600; padding: 6px 10px; border-radius: 8px; }
-  .mobile-staff-bar a.active { background: rgba(255, 255, 255, .18); }
+  .mobile-staff-bar { display: block; position: sticky; top: 0; z-index: 50; background: var(--green); color: #fff; box-shadow: 0 2px 10px rgba(0, 0, 0, .12); }
+  .mobile-staff-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 12px 10px 16px; min-height: 58px; }
+  .mobile-staff-top .brand { color: #fff; text-decoration: none; }
+  .mobile-staff-toggle { position: relative; width: 42px; height: 42px; border-radius: 10px; border: 0; background: rgba(255, 255, 255, .14); color: #fff; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
+  .mobile-staff-dot { position: absolute; top: 8px; right: 8px; width: 9px; height: 9px; border-radius: 50%; background: #f5c542; box-shadow: 0 0 0 2px var(--green); }
+  .mobile-staff-menu { display: flex; flex-direction: column; gap: 2px; padding: 4px 12px 14px; border-top: 1px solid rgba(255, 255, 255, .14); animation: fade-up .2s ease both; max-height: calc(100vh - 58px); overflow-y: auto; }
+  .mobile-staff-menu a { display: flex; align-items: center; justify-content: space-between; color: #fff; text-decoration: none; font-size: 15px; font-weight: 600; padding: 11px 12px; border-radius: 9px; }
+  .mobile-staff-menu a.active { background: rgba(255, 255, 255, .18); }
+  .mobile-staff-menu .count { background: #fff; color: var(--green); border-radius: 999px; font-size: 12px; font-weight: 700; padding: 1px 8px; }
+  .mobile-staff-who { font-size: 13px; opacity: .85; padding: 12px 12px 4px; border-top: 1px solid rgba(255, 255, 255, .14); margin-top: 6px; }
+  .mobile-staff-actions { display: flex; align-items: center; gap: 12px; padding: 6px 12px 0; }
+  .mobile-staff-actions a { padding: 6px 0; font-size: 14px; text-decoration: underline; justify-content: flex-start; }
+  .mobile-staff-actions button { background: none; border: 1px solid rgba(255, 255, 255, .45); color: #fff; border-radius: 8px; padding: 6px 14px; font: inherit; font-size: 14px; cursor: pointer; }
+  /* Tables fit the screen: the less important columns are hidden (.hide-sm) instead of forcing a 720px table. */
+  .table-wrap table.list { min-width: 0; }
+  table.list th, table.list td { padding: 10px 10px; font-size: 14px; }
+  table.list th { font-size: 11.5px; }
   .staff-main { padding: 18px 16px 40px; }
   .doc-card { flex-direction: column; }
   table.list .hide-sm { display: none; }
@@ -537,3 +551,36 @@ table.list tbody tr { transition: background .15s; }
 .forgot-link { align-self: flex-end; display: inline-flex; align-items: center; gap: 6px; margin-top: -8px; font-size: 13.5px; font-weight: 600; color: var(--green); text-decoration: none; }
 .forgot-link:hover, .forgot-inline:hover { text-decoration: underline; }
 .forgot-inline { display: inline-flex; align-items: center; gap: 6px; }
+
+/* iPhones zoom the page in when a text box under 16px is tapped; keep boxes at 16px on phones. */
+@media (max-width: 760px) {
+  .input, .select, .textarea, .auth-input { font-size: 16px; }
+}
+
+/* Wide tables scroll sideways inside their box; a soft shadow appears on the side that has
+   more columns, so it is clear the table can be swiped. (The white covers move with the
+   content and hide the shadow once the edge is reached.) */
+.table-wrap {
+  background:
+    linear-gradient(to right, #fff 30%, rgba(255, 255, 255, 0)) left / 40px 100% no-repeat local,
+    linear-gradient(to left, #fff 30%, rgba(255, 255, 255, 0)) right / 40px 100% no-repeat local,
+    radial-gradient(farthest-side at 0 50%, rgba(16, 24, 20, .16), transparent) left / 14px 100% no-repeat scroll,
+    radial-gradient(farthest-side at 100% 50%, rgba(16, 24, 20, .16), transparent) right / 14px 100% no-repeat scroll;
+  background-color: #fff;
+  -webkit-overflow-scrolling: touch;
+}
+.table-wrap table.list { background: transparent; }
+.table-wrap table.list th { background: transparent; }
+
+/* Small phones: list tables (students, staff, queue, requests, audit log) become stacked
+   rows, one block per record, instead of columns that do not fit. */
+@media (max-width: 560px) {
+  table.list.stack-sm, table.list.stack-sm tbody, table.list.stack-sm tr, table.list.stack-sm td { display: block; width: 100%; }
+  table.list.stack-sm thead { display: none; }
+  table.list.stack-sm tr { padding: 12px 14px; border-bottom: 1px solid var(--border); }
+  table.list.stack-sm tr:last-child { border-bottom: 0; }
+  table.list.stack-sm td { border: 0; padding: 2px 0; }
+  table.list.stack-sm td:empty, table.list.stack-sm td.hide-sm { display: none; }
+  table.list.stack-sm td + td { color: var(--muted); }
+  table.list.stack-sm td .actions { margin-top: 6px; }
+}
